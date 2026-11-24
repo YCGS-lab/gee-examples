@@ -32,6 +32,13 @@ var zones = ee.Image().int16().paint(basins, 'zone').rename('zone');
 // Get MODIS's native projection
 var modisProj = modis_lai.first().select('Lai').projection();
 
+// If you need fractional area weights:
+// Subdivide each MODIS pixel into k x k subpixels on the same grid.
+// The grid origin is unchanged, so subpixels nest exactly inside MODIS pixels.
+// var k = 5;
+// var fineProj = modisProj.atScale(modisProj.nominalScale().divide(k));
+// Then, use `fineProj` instead of `modisProj`.
+
 // Get the complete encompassing region of the HUC10 subset
 // (note: not b_box, because we include basins that partially intersect our bounding box)
 var region = huc10_sub.geometry().bounds();
